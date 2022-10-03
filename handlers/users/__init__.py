@@ -6,7 +6,7 @@ from .buttons import dp
 from .test import dp
 from .inline_menu import dp
 from .register import dp
-
+from .photos import dp
 
 from .error import dp
 
