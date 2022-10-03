@@ -1,19 +1,13 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
-from aiogram.types import ReplyKeyboardMarkup
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 from loader import dp
 from states import Photos
 from utils import get_img_url
 
-kb_more = ReplyKeyboardMarkup([
-    [
-        'ЕЩЁ'
-    ]
-],
-    resize_keyboard=True
-)
+kb_more = ReplyKeyboardMarkup([[KeyboardButton('ЕЩЁ')]], resize_keyboard=True)
 
 
 @dp.message_handler(Command('photo'))
@@ -39,7 +33,8 @@ async def get_more(message: types.Message, state: FSMContext):
 
     print(url)
     try:
-        await dp.bot.send_photo(chat_id=message.chat.id, photo=url, reply_markup=kb_more, parse_mode=types.ParseMode.HTML)
+        await dp.bot.send_photo(chat_id=message.chat.id, photo=url, reply_markup=kb_more,
+                                parse_mode=types.ParseMode.HTML)
     except Exception as ex:
         print(ex)
     finally:
@@ -60,7 +55,7 @@ async def get_photos(message: types.Message, state: FSMContext):
             'next': 1
         })
         url = urls[0]
-        await dp.bot.send_photo(chat_id=message.chat.id, photo=url, reply_markup=kb_more, parse_mode=types.ParseMode.HTML)
+        await dp.bot.send_photo(chat_id=message.chat.id, photo=url, reply_markup=kb_more,
+                                parse_mode=types.ParseMode.HTML)
     else:
         await message.reply('Ничего не найдено')
-
