@@ -30,7 +30,7 @@ class CustomLinkPrinter(ImageDownloader):
 def get_img_url(req):
     google_crawler = GoogleImageCrawler(downloader_cls=CustomLinkPrinter)
     google_crawler.downloader.file_urls = []
-    google_crawler.crawl(keyword=req, max_num=10)
+    google_crawler.crawl(keyword=req, max_num=10, overwrite=True)
     file_urls = google_crawler.downloader.file_urls
 
     if file_urls:
@@ -38,7 +38,7 @@ def get_img_url(req):
 
 
 def main():
-    print(get_img_url('raid заточка'))
+    print(get_img_url('Волгоград'))
 
 
 if __name__ == '__main__':

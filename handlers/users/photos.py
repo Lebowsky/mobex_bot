@@ -31,12 +31,14 @@ async def get_more(message: types.Message, state: FSMContext):
     url = urls[nxt]
     nxt += 1
 
-    print(url)
+    if nxt == len(urls):
+        await message.answer('Нет больше картинок')
+        return
     try:
         await dp.bot.send_photo(chat_id=message.chat.id, photo=url, reply_markup=kb_more,
                                 parse_mode=types.ParseMode.HTML)
     except Exception as ex:
-        print(ex)
+        print(f'404: {url}')
     finally:
         await state.update_data({
             'urls': urls,
@@ -52,10 +54,14 @@ async def get_photos(message: types.Message, state: FSMContext):
     if urls:
         await state.update_data({
             'urls': urls,
-            'next': 1
+            'next': 0
         })
         url = urls[0]
-        await dp.bot.send_photo(chat_id=message.chat.id, photo=url, reply_markup=kb_more,
-                                parse_mode=types.ParseMode.HTML)
+        try:
+            await dp.bot.send_photo(chat_id=message.chat.id, photo=url, reply_markup=kb_more,
+                                    parse_mode=types.ParseMode.HTML)
+        except Exception:
+            await message.reply(text='Попробуй еще', reply_markup=kb_more)
+            print(f'404: {url}')
     else:
         await message.reply('Ничего не найдено')
